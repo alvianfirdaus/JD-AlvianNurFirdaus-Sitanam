@@ -1,44 +1,69 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sitanam_alvian_apk/Routes/routes.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool _showFirst = true;
+
   @override
   void initState() {
     super.initState();
-    // Menambahkan delay 5 detik sebelum navigasi ke dashboard
-    Future.delayed(Duration(seconds: 5), () {
-      Navigator.pushReplacementNamed(context, Routes.loginPage);
+
+    // Ganti gambar setelah 2 detik
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        setState(() {
+          _showFirst = false;
+        });
+      }
+    });
+
+    // Lanjut ke login setelah total 4 detik
+    Future.delayed(const Duration(seconds: 4), () {
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, Routes.loginPage);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: Colors.white,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/images/logositanam.png',
-                width: 170, height: 170),
-            SizedBox(height: 16),
-          ],
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 800),
+          child: _showFirst
+              ? Image.asset(
+                  'assets/images/logositanam.png',
+                  key: const ValueKey('sitanam'),
+                  width: 170,
+                  height: 170,
+                )
+              : Image.asset(
+                  'assets/images/jagoandigital.png',
+                  key: const ValueKey('jagoandigital'),
+                  width: 170,
+                  height: 170,
+                ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8.0),
+      bottomNavigationBar: const Padding(
+        padding: EdgeInsets.all(8.0),
         child: Text(
-          'sitanam mobile @ 2024',
+          'Sitanam X Jagoan Banyuwangi',
           style: TextStyle(
             fontFamily: 'Urbanist',
             fontSize: 12,
             fontWeight: FontWeight.w400,
-            color: const Color(0xff4a4a4a),
+            color: Color(0xff4a4a4a),
           ),
           textAlign: TextAlign.center,
         ),

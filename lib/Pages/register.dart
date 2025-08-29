@@ -201,7 +201,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             const SizedBox(height: 12),
             const Text(
-              'sitanam mobile @ 2024',
+              'Sitanam X Jagoan Banyuwagi',
               style: TextStyle(color: Colors.grey),
             ),
           ],
