@@ -2,7 +2,9 @@
 
 ![Logo Sitanam](assets/images/logositanam.png)
 
-**Sitanam** adalah aplikasi mobile berbasis Smart Precision Farming yang dirancang untuk membantu petani dalam mengelola lahan pertanian secara modern, efisien, dan berkelanjutan. Aplikasi ini terintegrasi dengan perangkat IoT (Internet of Things) berbasis ESP32 dan berbagai sensor (kelembaban tanah, suhu, kelembaban udara, NPK, pH, dsb.), sehingga mampu memantau kondisi lahan secara real-time, mengontrol alat dan melihat rekomendasi pupuk yang sesuai dengan tanaman menggunakan sistem pengambilan keputusan presisi.
+**Sitanam** adalah aplikasi mobile berbasis Smart Precision Farming yang dirancang untuk membantu petani dalam mengelola lahan pertanian secara modern, efisien, dan berkelanjutan. Aplikasi ini terintegrasi dengan perangkat IoT (Internet of Things) berbasis ESP32 dan berbagai sensor (kelembaban tanah, suhu, kelembaban udara, NPK, pH, dsb.), sehingga mampu memantau kondisi lahan secara real-time, mengontrol alat dan melihat rekomendasi pupuk yang sesuai dengan tanaman menggunakan sistem pengambilan keputusan presisi.<p>
+
+
 
 ## Ketentuan Teknis
 Pengembangan Aplikasi ini menggunakan framework **Flutter** dan berikut adalah ketentuan teknis untuk menjalankan aplikasi
@@ -17,12 +19,12 @@ Pengembangan Aplikasi ini menggunakan framework **Flutter** dan berikut adalah k
 ## Alur Penggunaan Aplikasi
 Alur aplikasi sitanam dapat dilihat pada flowchart dibawah ini
 
-![alur sistem](assets/images/alur.png)<p>
+![alur sistem](dok/0.png)<p>
 
 
 ## Dokumentasi Pengerjaan
 
-### 29 Agustus 2025
+### Seluruh Dokumentasi Pengerjaan Per fitur dan halaman aplikasi akan dijelaskan dibawah ini !
 
 **Pembuatan Splash Screen**<p>
 Saat aplikasi dijalankan, pertama kali muncul Splash Screen berupa logo dan nama sistem selama 5 detik. Layar ini memberi kesan awal sekaligus waktu inisialisasi, lalu otomatis mengarahkan pengguna ke halaman login.<p>
@@ -60,6 +62,21 @@ Halaman ini menampilkan email akun aktif, menyediakan fitur ganti password (deng
 | Halaman Kelola Akun | Halaman Kelola Akun (kolom isi) | Error Handling |
 |----------|----------|-------------|
 | ![Gambar 1](dok/10.png) | ![Gambar 2](dok/11.png) |  ![Gambar 3](dok/12.png) |
+
+**Pembuatan Halaman Dashboard Kontrol Perangkat IoT**<p>
+Setelah memilih perangkat yng ingin dikontrol, pengguna diarahkan ke Dashboard sebagai pusat navigasi IoT. Dashboard ini sederhana dan menampilkan menu menuju fitur utama seperti Kendali IoT, Status Lingkungan, Catatan, dan Rekomendasi Pupuk, sehingga memudahkan pemantauan dan pengendalian sesuai kebutuhan.
+
+| Halaman Dashboard Kontrol Perangkat IoT | 
+|----------|
+| ![Gambar 1](dok/14.png) |
+
+**Pembuatan Halaman Kendali IoT**<p>
+Halaman Kendali IoT memungkinkan pengguna mengatur pompa dari jarak jauh. Tersedia dua mode: Manual, dengan tombol hidupkan/matikan pompa, dan Otomatis, di mana sistem mengendalikan pompa sesuai logika yang telah ditentukan. Tampilan dibuat sederhana agar pengguna mudah berpindah antar mode sesuai kebutuhan di lapangan.
+
+| Mode Manual Pompa On| Mode Manual Pompa Off | Mode Otomatis sesuai kelembaban tanah |
+|----------|----------|-------------|
+| ![Gambar 1](dok/15.png) | ![Gambar 2](dok/16.png) |  ![Gambar 3](dok/17.png) |
+
 
 -------------------
 
