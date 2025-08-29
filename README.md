@@ -37,6 +37,16 @@ Halaman Register digunakan untuk membuat akun baru dengan email, password, dan k
 |----------|----------|----------|
 | ![Gambar 1](dok/2.png) | ![Gambar 2](dok/3.png) | ![Gambar 3](dok/4.png) |
 
+**Pembuatan Halaman Daftar Perangkat IoT**<p>
+Halaman Daftar Perangkat IoT menampilkan perangkat yang terhubung secara real-time dari Firebase Realtime Database. Setelah login, pengguna diarahkan ke halaman ini: jika belum ada perangkat, ditampilkan panduan menambah perangkat; jika ada, ditampilkan daftar perangkat dalam bentuk card untuk dikontrol.
+Pengguna dapat menambah perangkat lewat ikon +, menghapus perangkat dengan tekan lama pada card, serta mengatur akun lewat ikon profil di pojok kanan atas..
+
+| Daftar Perangkat IoT (jika masih belum memiliki perangkat) | Daftar Perangkat IoT (telah menambahkan perangkat ke aplikasi)  | Error Handling (jika menghapus perangkat)|
+|----------|----------|----------|
+| ![Gambar 1](dok/5.png) | ![Gambar 2](dok/.png) | ![Gambar 3](dok/.png) |
+
+
+-------------------
 
 
 

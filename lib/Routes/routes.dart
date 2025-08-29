@@ -7,7 +7,7 @@ import 'package:sitanam_alvian_apk/Pages/splashscreen.dart';
 // import 'package:sitanam_alvian_apk/Pages/akun.dart';
 import 'package:sitanam_alvian_apk/Pages/login.dart';
 import 'package:sitanam_alvian_apk/Pages/register.dart';
-// import 'package:sitanam_alvian_apk/Pages/daftarAlat.dart';
+import 'package:sitanam_alvian_apk/Pages/daftarAlat.dart';
 // import 'package:sitanam_alvian_apk/Pages/tambahAlat.dart';
 
 class Routes {
@@ -27,7 +27,7 @@ class Routes {
     // dashboard: (context) => DashboardScreen(),
     loginPage: (context) => LoginPage(),
     registerPage:(context) => RegisterPage(),
-    // daftarAlatPage:(context) => DaftarAlatPage(),
+    daftarAlatPage:(context) => DaftarAlatPage(),
     // tambahAlatPage:(context) => TambahAlatPage(),
     // akun: (context) => AkunScreen(),
     // settings: (context) => SettingsPage(),
