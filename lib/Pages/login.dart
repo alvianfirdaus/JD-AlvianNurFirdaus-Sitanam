@@ -189,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 12),
             const Text(
-              'sitanam X Jagoan Banyuwangi',
+              'Sitanam X Jagoan Banyuwangi',
               style: TextStyle(color: Colors.grey),
             ),
           ],

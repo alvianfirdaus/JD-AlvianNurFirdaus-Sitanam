@@ -201,7 +201,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             const SizedBox(height: 12),
             const Text(
-              'Sitanam X Jagoan Banyuwagi',
+              'Sitanam X Jagoan Banyuwangi',
               style: TextStyle(color: Colors.grey),
             ),
           ],

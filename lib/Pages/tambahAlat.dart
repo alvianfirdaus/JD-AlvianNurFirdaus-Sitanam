@@ -27,12 +27,18 @@ class _TambahAlatPageState extends State<TambahAlatPage> {
   }
 
   Future<void> _connectDevice() async {
+    print("🔘 Tombol Connect ditekan"); // Debug log
+
     final String plotName = _alatController.text.trim();
     final String? userUid = _auth.currentUser?.uid;
 
+    print("📌 Plot name: $plotName");
+    print("👤 User UID: $userUid");
+
     if (plotName.isEmpty || userUid == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('ID alat kosong atau pengguna tidak terautentikasi.')),
+      _showAlert(
+        title: "Gagal",
+        message: "ID alat kosong atau pengguna belum login.",
       );
       return;
     }
@@ -44,58 +50,89 @@ class _TambahAlatPageState extends State<TambahAlatPage> {
       if (snapshot.exists) {
         final data = Map<String, dynamic>.from(snapshot.value as Map);
 
+        // Ambil id list (bisa List atau Map)
         List<dynamic> idList = [];
         if (data.containsKey('id')) {
-          idList = List.from(data['id']);
+          if (data['id'] is List) {
+            idList = List.from(data['id']);
+          } else if (data['id'] is Map) {
+            idList = (data['id'] as Map).values.toList();
+          }
         }
 
+        // Tambahkan user UID kalau belum ada
         if (!idList.contains(userUid)) {
           idList.add(userUid);
-          await plotRef.update({'id': idList});
+
+          // Simpan kembali dalam bentuk map { "1": uid1, "2": uid2 }
+          final newMap = {
+            for (int i = 0; i < idList.length; i++) "${i + 1}": idList[i],
+          };
+
+          await plotRef.update({'id': newMap});
         }
 
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text(
-                'Berhasil',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            content: Text('Berhasil terkoneksi dengan $plotName'),
-            actions: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pushReplacementNamed(context, '/daftaralatpage');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green, // Tombol hijau
-                    foregroundColor: Colors.white, // Teks putih
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30), // Ujung membulat
-                    ),
-                  ),
-                  child: const Text('OK'),
-                ),
-              ),
-            ),
-          ],
-          ),
+        _showAlert(
+          title: "Berhasil",
+          message: "Berhasil terkoneksi dengan $plotName",
+          success: true,
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Plot "$plotName" tidak ditemukan di database.')),
+        _showAlert(
+          title: "Gagal",
+          message: 'Plot "$plotName" tidak ditemukan di database.',
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Terjadi kesalahan: $e')),
+      _showAlert(
+        title: "Error",
+        message: "Terjadi kesalahan: $e",
       );
     }
+  }
+
+  void _showAlert({required String title, required String message, bool success = false}) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: Text(message),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  if (success) {
+                    Navigator.pushReplacementNamed(context, '/daftaralatpage');
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: success ? Colors.green : Colors.red,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                child: const Text("OK"),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _resetScanner() {
+    setState(() {
+      _alatController.clear();
+      _scanned = false;
+    });
   }
 
   @override
@@ -112,105 +149,126 @@ class _TambahAlatPageState extends State<TambahAlatPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AkunScreen()),
+
               );
             },
           ),
         ],
       ),
       body: Column(
-  children: [
-    const SizedBox(height: 40),
-    Expanded(
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(50)),
-        ),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom + 20,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Center(
-                child: Text(
-                  "Arahkan kamera ke QR Code Perangkat",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+        children: [
+          const SizedBox(height: 40),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(50)),
               ),
-              const SizedBox(height: 16),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: SizedBox(
-                  height: 300,
-                  child: MobileScanner(
-                    fit: BoxFit.cover,
-                    onDetect: (BarcodeCapture capture) {
-                      final barcode = capture.barcodes.firstOrNull;
-                      if (barcode != null) {
-                        _onScan(barcode);
-                      }
-                    },
-                  ),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 20,
                 ),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                textAlign: TextAlign.center,
-                textAlignVertical: TextAlignVertical.center,
-                controller: _alatController,
-                enabled: false, // Membuat kolom tidak bisa diketik
-                style: const TextStyle(fontWeight: FontWeight.bold),
-                decoration: const InputDecoration(
-                  // labelText: 'ID Perangkat',
-                  filled: true,
-                  fillColor: Color.fromARGB(255, 224, 224, 224), // Warna latar belakang abu-abu
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    borderSide: BorderSide.none,
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                ),
-              ),
-              const SizedBox(height: 16),
-                SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _connectDevice,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 0, 100, 0),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Center(
+                      child: Text(
+                        "Arahkan kamera ke QR Code Perangkat",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ClipRRect(
                       borderRadius: BorderRadius.circular(20),
+                      child: SizedBox(
+                        height: 300,
+                        child: MobileScanner(
+                          fit: BoxFit.cover,
+                          onDetect: (BarcodeCapture capture) {
+                            final barcode = capture.barcodes.firstOrNull;
+                            if (barcode != null) {
+                              _onScan(barcode);
+                            }
+                          },
+                        ),
+                      ),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                  ),
-                  child: const Text(
-                    'connect',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      letterSpacing: 1,
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      textAlign: TextAlign.center,
+                      textAlignVertical: TextAlignVertical.center,
+                      controller: _alatController,
+                      enabled: false,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Color.fromARGB(255, 224, 224, 224),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _connectDevice,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 0, 100, 0),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        child: const Text(
+                          'CONNECT',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        onPressed: _resetScanner,
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.red,
+                          side: const BorderSide(color: Colors.red),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        child: const Text(
+                          'RESET SCANNER',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              ],
             ),
           ),
-        ),
+        ],
       ),
-    ],
-  ),
-
-
     );
   }
 }

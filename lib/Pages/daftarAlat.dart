@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sitanam_alvian_apk/Pages/akun.dart';
-import 'package:sitanam_alvian_apk/Pages/lingkungan.dart';
+// import 'package:sitanam_alvian_apk/Pages/lingkungan.dart';
 import 'package:sitanam_alvian_apk/Pages/dashboard.dart';
 import 'package:sitanam_alvian_apk/Pages/tambahAlat.dart';
 
@@ -210,7 +210,7 @@ class _DaftarAlatPageState extends State<DaftarAlatPage> {
                                   
                                 ],
                                 image: const DecorationImage(
-                                  image: AssetImage('assets/images/promo1.png'),
+                                  image: AssetImage('assets/images/promo.png'),
                                   fit: BoxFit.cover,
                                 ),
                               ),
