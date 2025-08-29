@@ -84,7 +84,7 @@ void setup() {
   lcd.backlight();
 
   // Initialize DHT sensor
-  // dht.begin();
+  dht.begin();
 
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
@@ -237,10 +237,10 @@ void loop() {
   }
   lcd.setCursor(0, 2);
   lcd.print("T : ");
-  // lcd.print(temperature, 1);
+  lcd.print(temperature, 1);
   lcd.print("C | ");
   lcd.print("H : ");
-  // lcd.print(humidity, 1);
+  lcd.print(humidity, 1);
 
   lcd.setCursor(0, 3);
   lcd.print("N:");
