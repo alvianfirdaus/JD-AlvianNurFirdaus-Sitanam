@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "526778655587",
+    "project_id": "sitanamalvian",
+    "storage_bucket": "sitanamalvian.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:526778655587:android:d15fe6912b18a9c6536956",
+        "android_client_info": {
+          "package_name": "com.example.sitanam_alvian_apk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSqrwCEWKE7wcNQ7Jc7Hi5Zi41OBv7KEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
