@@ -232,6 +232,12 @@ class _AkunScreenState extends State<AkunScreen> {
               child: const Text('Logout', style: TextStyle(fontSize: 16)),
             ),
             const SizedBox(height: 40),
+
+            Image.asset(
+              'assets/images/bwikab.png',   // pastikan file ada di folder assets
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
           ],
         ),
       ),

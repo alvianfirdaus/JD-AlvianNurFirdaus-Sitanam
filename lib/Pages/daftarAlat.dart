@@ -210,7 +210,7 @@ class _DaftarAlatPageState extends State<DaftarAlatPage> {
                                   
                                 ],
                                 image: const DecorationImage(
-                                  image: AssetImage('assets/images/promo.png'),
+                                  image: AssetImage('assets/images/promo1.png'),
                                   fit: BoxFit.cover,
                                 ),
                               ),

@@ -54,6 +54,12 @@ Halaman ini memudahkan pengguna menghubungkan perangkat IoT ke akun dengan memin
 | ![Gambar 1](dok/8.jpg) | ![Gambar 2](dok/9.jpg) |
 
 
+**Pembuatan Halaman Kelola Akun**<p>
+Halaman ini menampilkan email akun aktif, menyediakan fitur ganti password (dengan memasukkan password lama, baru, dan konfirmasi), serta tombol logout untuk keluar dari akun.
+
+| Halaman Kelola Akun | Halaman Kelola Akun (kolom isi) | Error Handling
+|----------|----------|-------------|
+| ![Gambar 1](dok/10.png) | ![Gambar 2](dok/11.png) |  ![Gambar 3](dok/12.png) |
 
 -------------------
 
