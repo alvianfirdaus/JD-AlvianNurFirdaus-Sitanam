@@ -43,8 +43,15 @@ Pengguna dapat menambah perangkat lewat ikon +, menghapus perangkat dengan tekan
 
 | Daftar Perangkat IoT (jika masih belum memiliki perangkat) | Daftar Perangkat IoT (telah menambahkan perangkat ke aplikasi)  | Error Handling (jika menghapus perangkat)|
 |----------|----------|----------|
-| ![Gambar 1](dok/5.png) | ![Gambar 2](dok/.png) | ![Gambar 3](dok/.png) |
+| ![Gambar 1](dok/5.png) | ![Gambar 2](dok/6.png) | ![Gambar 3](dok/7.png) |
 
+
+**Pembuatan Halaman Tambah Perangkat IoT**<p>
+Halaman ini memudahkan pengguna menghubungkan perangkat IoT ke akun dengan memindai kode QR. Sistem akan memverifikasi ID di Firebase, lalu menambahkan UID pengguna ke data perangkat. Jika berhasil, muncul popup konfirmasi.
+
+| View Scan QR  | Error Handling (jika berhasil menambahkan perangkat) |
+|----------|----------|
+| ![Gambar 1](dok/.png) | ![Gambar 3](dok/.png) |
 
 -------------------
 
