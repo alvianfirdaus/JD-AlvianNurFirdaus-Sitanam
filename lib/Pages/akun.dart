@@ -1,5 +1,8 @@
+import 'dart:io' show exit;
+import 'package:flutter/services.dart'; // for SystemNavigator.pop
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sitanam_alvian_apk/Routes/routes.dart';
 
 class AkunScreen extends StatefulWidget {
@@ -13,63 +16,80 @@ class _AkunScreenState extends State<AkunScreen> {
   final TextEditingController _confirmPasswordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  static const _kIsLoggedIn = 'isLoggedIn';
+  static const _kLoginAtMs  = 'loginAt';
+
+  Future<void> _clearSession() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_kIsLoggedIn);
+      await prefs.remove(_kLoginAtMs);
+    } catch (_) {}
+  }
+
   void _ubahPassword() async {
-  String oldPassword = _oldPasswordController.text.trim();
-  String newPassword = _newPasswordController.text.trim();
-  String confirmPassword = _confirmPasswordController.text.trim();
+    final oldPassword = _oldPasswordController.text.trim();
+    final newPassword = _newPasswordController.text.trim();
+    final confirmPassword = _confirmPasswordController.text.trim();
 
-  if (oldPassword.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty) {
-    _showMessage("Semua kolom harus diisi.");
-    return;
+    if (oldPassword.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty) {
+      _showMessage("Semua kolom harus diisi.");
+      return;
+    }
+    if (newPassword != confirmPassword) {
+      _showMessage("Password baru dan konfirmasi tidak cocok.");
+      return;
+    }
+
+    try {
+      final user = _auth.currentUser!;
+      final cred = EmailAuthProvider.credential(email: user.email!, password: oldPassword);
+      await user.reauthenticateWithCredential(cred);
+      await user.updatePassword(newPassword);
+
+      _oldPasswordController.clear();
+      _newPasswordController.clear();
+      _confirmPasswordController.clear();
+
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Berhasil"),
+            content: const Text("Password berhasil diubah. Silakan login kembali."),
+            actions: [
+              TextButton(
+                child: const Text("OK"),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  await _clearSession();
+                  await _auth.signOut();
+                  // Arahkan ke login (kalau mau keluar app juga, ganti jadi _logout())
+                  if (!mounted) return;
+                  Navigator.pushReplacementNamed(context, Routes.loginPage);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      _showMessage("Gagal mengubah password: $e");
+    }
   }
 
-  if (newPassword != confirmPassword) {
-    _showMessage("Password baru dan konfirmasi tidak cocok.");
-    return;
-  }
+  Future<void> _logout() async {
+    // Bersihkan sesi & sign out
+    await _clearSession();
+    try { await _auth.signOut(); } catch (_) {}
 
-  try {
-    User user = _auth.currentUser!;
-    AuthCredential credential = EmailAuthProvider.credential(
-      email: user.email!,
-      password: oldPassword,
-    );
-    await user.reauthenticateWithCredential(credential);
-    await user.updatePassword(newPassword);
-
-    _oldPasswordController.clear();
-    _newPasswordController.clear();
-    _confirmPasswordController.clear();
-
-    // Tampilkan pop-up sukses
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Berhasil"),
-          content: const Text("Password berhasil diubah. Silakan login kembali."),
-          actions: [
-            TextButton(
-              child: const Text("OK"),
-              onPressed: () async {
-                Navigator.of(context).pop(); // Tutup dialog
-                await _auth.signOut(); // Logout
-                Navigator.pushReplacementNamed(context, '/loginpage'); // Arahkan ke login
-              },
-            ),
-          ],
-        );
-      },
-    );
-  } catch (e) {
-    _showMessage("Gagal mengubah password: $e");
-  }
-}
-
-  void _logout() async {
-    await _auth.signOut();
-    Navigator.pushReplacementNamed(context, '/loginpage');
+    // Tutup aplikasi (Android OK; iOS biasanya di-reject oleh guideline)
+    try {
+      SystemNavigator.pop();
+    } catch (_) {
+      exit(0);
+    }
   }
 
   void _showMessage(String msg) {
@@ -87,26 +107,22 @@ class _AkunScreenState extends State<AkunScreen> {
         elevation: 0,
         toolbarHeight: 80,
         centerTitle: true,
-        automaticallyImplyLeading: false, // Tambahkan ini
+        automaticallyImplyLeading: false,
         title: const Text(
           'Akun',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Profil box
+            // Profil
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 0, 100, 0),
+                color: const Color.fromARGB(255, 0, 100, 0),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
@@ -117,24 +133,17 @@ class _AkunScreenState extends State<AkunScreen> {
                     child: Icon(Icons.person, size: 60, color: Color.fromARGB(255, 0, 100, 0)),
                   ),
                   const SizedBox(height: 12),
-                  Text(
-                    userEmail,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
+                  Text(userEmail, style: const TextStyle(color: Colors.white, fontSize: 16)),
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
 
             // Pengaturan akun
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 0, 100, 0),
+                color: const Color.fromARGB(255, 0, 100, 0),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
@@ -144,25 +153,16 @@ class _AkunScreenState extends State<AkunScreen> {
                     padding: EdgeInsets.all(16.0),
                     child: Text(
                       'Pengaturan Akun',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
                       child: ExpansionTile(
-                        title: const Text(
-                          "Ubah Password",
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-                        ),
+                        title: const Text("Ubah Password",
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
                         trailing: const Icon(Icons.arrow_drop_down_circle, color: Colors.green),
                         children: [
                           Padding(
@@ -173,8 +173,7 @@ class _AkunScreenState extends State<AkunScreen> {
                                   controller: _oldPasswordController,
                                   obscureText: true,
                                   decoration: const InputDecoration(
-                                    labelText: 'Password Lama',
-                                    border: OutlineInputBorder(),
+                                    labelText: 'Password Lama', border: OutlineInputBorder(),
                                   ),
                                 ),
                                 const SizedBox(height: 12),
@@ -182,8 +181,7 @@ class _AkunScreenState extends State<AkunScreen> {
                                   controller: _newPasswordController,
                                   obscureText: true,
                                   decoration: const InputDecoration(
-                                    labelText: 'Password Baru',
-                                    border: OutlineInputBorder(),
+                                    labelText: 'Password Baru', border: OutlineInputBorder(),
                                   ),
                                 ),
                                 const SizedBox(height: 12),
@@ -191,8 +189,7 @@ class _AkunScreenState extends State<AkunScreen> {
                                   controller: _confirmPasswordController,
                                   obscureText: true,
                                   decoration: const InputDecoration(
-                                    labelText: 'Konfirmasi Password Baru',
-                                    border: OutlineInputBorder(),
+                                    labelText: 'Konfirmasi Password Baru', border: OutlineInputBorder(),
                                   ),
                                 ),
                                 const SizedBox(height: 16),
@@ -215,29 +212,22 @@ class _AkunScreenState extends State<AkunScreen> {
                 ],
               ),
             ),
-
             const SizedBox(height: 30),
 
-            // Logout button
+            // Logout -> keluar aplikasi
             ElevatedButton(
               onPressed: _logout,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 192, 13, 0),
+                backgroundColor: const Color.fromARGB(255, 192, 13, 0),
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(horizontal: 135, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
               ),
               child: const Text('Logout', style: TextStyle(fontSize: 16)),
             ),
             const SizedBox(height: 40),
 
-            Image.asset(
-              'assets/images/bwikab.png',   // pastikan file ada di folder assets
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+            Image.asset('assets/images/bwikab.png', width: double.infinity, fit: BoxFit.cover),
           ],
         ),
       ),

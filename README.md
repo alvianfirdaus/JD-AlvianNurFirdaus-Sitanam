@@ -33,9 +33,9 @@ Saat aplikasi dijalankan, pertama kali muncul Splash Screen berupa logo dan nama
 Halaman Login digunakan untuk masuk dengan email dan password melalui Firebase Authentication. Jika benar, pengguna masuk ke Halaman Daftar Perangkat IoT, jika salah muncul pesan error.
 Halaman Register digunakan untuk membuat akun baru dengan email, password, dan konfirmasi password, lalu didaftarkan ke Firebase Authentication.
 
-| Login | Register | Error Handling |
-|----------|----------|----------|
-| ![Gambar 1](dok/2.png) | ![Gambar 2](dok/3.png) | ![Gambar 3](dok/4.png) |
+| Halaman Login | Halaman Register | Error Handling (berhasil login)| Error Handling (gagal login)|
+|----------|----------|----------|--------|
+| ![Gambar 1](dok/2.png) | ![Gambar 2](dok/3.png) | ![Gambar 3](dok/4.png) |![Gambar 4](dok/13.png) |
 
 **Pembuatan Halaman Daftar Perangkat IoT**<p>
 Halaman Daftar Perangkat IoT menampilkan perangkat yang terhubung secara real-time dari Firebase Realtime Database. Setelah login, pengguna diarahkan ke halaman ini: jika belum ada perangkat, ditampilkan panduan menambah perangkat; jika ada, ditampilkan daftar perangkat dalam bentuk card untuk dikontrol.
@@ -57,7 +57,7 @@ Halaman ini memudahkan pengguna menghubungkan perangkat IoT ke akun dengan memin
 **Pembuatan Halaman Kelola Akun**<p>
 Halaman ini menampilkan email akun aktif, menyediakan fitur ganti password (dengan memasukkan password lama, baru, dan konfirmasi), serta tombol logout untuk keluar dari akun.
 
-| Halaman Kelola Akun | Halaman Kelola Akun (kolom isi) | Error Handling
+| Halaman Kelola Akun | Halaman Kelola Akun (kolom isi) | Error Handling |
 |----------|----------|-------------|
 | ![Gambar 1](dok/10.png) | ![Gambar 2](dok/11.png) |  ![Gambar 3](dok/12.png) |
 

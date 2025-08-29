@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/gestures.dart';
 
+const _kIsLoggedIn = 'isLoggedIn';
+const _kLoginAtMs  = 'loginAt';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
-
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -14,21 +16,23 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   bool isLoading = false;
-  bool isPasswordVisible = false;  // Added to manage password visibility
+  bool isPasswordVisible = false;
 
   Future<void> login() async {
     setState(() => isLoading = true);
-
     try {
       await _auth.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isLoggedIn', true);
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_kIsLoggedIn, true);
+      await prefs.setInt(_kLoginAtMs, DateTime.now().millisecondsSinceEpoch);
 
+      if (!mounted) return;
       Navigator.pushReplacementNamed(context, '/daftaralatpage');
     } on FirebaseAuthException catch (e) {
       String message = 'Login gagal';
@@ -37,22 +41,18 @@ class _LoginPageState extends State<LoginPage> {
       } else if (e.code == 'wrong-password') {
         message = 'Password salah';
       }
-
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Login Error'),
           content: Text(message),
           actions: [
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () => Navigator.of(context).pop(),
-            )
+            TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('OK')),
           ],
         ),
       );
     } finally {
-      setState(() => isLoading = false);
+      if (mounted) setState(() => isLoading = false);
     }
   }
 
@@ -77,63 +77,37 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 children: [
                   const SizedBox(height: 40),
-                  Image.asset(
-                    'assets/images/sitanamputih.png',
-                    height: 80,
-                  ),
+                  Image.asset('assets/images/sitanamputih.png', height: 80),
                   const SizedBox(height: 10),
-                  const Text(
-                    "LOGIN",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  const Text("LOGIN", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
-            SizedBox(height: 60),
+            const SizedBox(height: 60),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
                 child: Column(
                   children: [
                     Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+                      decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(15)),
                       child: TextField(
                         controller: emailController,
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.person),
-                          hintText: 'Email',
-                          border: InputBorder.none,
-                        ),
+                        decoration: const InputDecoration(prefixIcon: Icon(Icons.person), hintText: 'Email', border: InputBorder.none),
                       ),
                     ),
                     const SizedBox(height: 40),
                     Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+                      decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(15)),
                       child: TextField(
                         controller: passwordController,
-                        obscureText: !isPasswordVisible,  // Toggle visibility based on the state
+                        obscureText: !isPasswordVisible,
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.vpn_key),
                           hintText: 'Password',
                           suffixIcon: IconButton(
-                            icon: Icon(
-                              isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                isPasswordVisible = !isPasswordVisible;  // Toggle password visibility
-                              });
-                            },
+                            icon: Icon(isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+                            onPressed: () => setState(() => isPasswordVisible = !isPasswordVisible),
                           ),
                           border: InputBorder.none,
                         ),
@@ -157,15 +131,10 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF006400),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       minimumSize: const Size(double.infinity, 50),
                     ),
-                    child: const Text(
-                      'LOGIN',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    child: const Text('LOGIN', style: TextStyle(color: Colors.white)),
                   ),
             const SizedBox(height: 12),
             Text.rich(
@@ -175,23 +144,14 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   TextSpan(
                     text: 'Register di sini',
-                    style: const TextStyle(
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline,
-                    ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        Navigator.pushNamed(context, '/registerpage');
-                      },
+                    style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+                    recognizer: TapGestureRecognizer()..onTap = () => Navigator.pushNamed(context, '/registerpage'),
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 12),
-            const Text(
-              'Sitanam X Jagoan Banyuwangi',
-              style: TextStyle(color: Colors.grey),
-            ),
+            const Text('Sitanam X Jagoan Banyuwangi', style: TextStyle(color: Colors.grey)),
           ],
         ),
       ),
