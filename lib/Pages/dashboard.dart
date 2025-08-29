@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:sitanam_alvian_apk/Pages/kendali.dart';
+import 'package:sitanam_alvian_apk/Pages/kendali.dart';
 // import 'package:sitanam_alvian_apk/Pages/lingkungan.dart';
 // import 'package:sitanam_alvian_apk/Pages/catatan.dart';
 // import 'package:sitanam_alvian_apk/Pages/hitung_nutrisi.dart';
@@ -82,10 +82,10 @@ Widget build(BuildContext context) {
                       imagePath: 'assets/images/iconcontrol.png',
                       label: 'Kendali IOT',
                       onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => KendaliScreen()),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => KendaliScreen()),
+                        );
                       },
                     ),
                     DashboardItem(
