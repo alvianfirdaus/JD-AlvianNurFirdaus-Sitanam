@@ -7,7 +7,7 @@ import 'package:sitanam_alvian_apk/Pages/catatan.dart';
 import 'package:sitanam_alvian_apk/Pages/hitung_nutrisi.dart';
 import 'package:sitanam_alvian_apk/Pages/akun.dart';
 import 'package:sitanam_alvian_apk/Pages/edukasi.dart';
-// import 'package:sitanam_alvian_apk/Pages/cuaca_screen.dart';
+import 'package:sitanam_alvian_apk/Pages/cuaca_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   final int selectedIndex;
@@ -123,18 +123,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           );
                         },
                       ),
-                      // DashboardItem(
-                      //   imagePath: 'assets/images/iconcuaca.png',
-                      //   label: 'Perkiraan Cuaca',
-                      //   onTap: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //         builder: (_) => const CuacaScreen(adm4: '35.10.16.1002'), // ganti kode ADM4 kamu
-                      //       ),
-                      //     );
-                      //   },
-                      // ),
+                      DashboardItem(
+                        imagePath: 'assets/images/iconcuaca.png',
+                        label: 'Perkiraan Cuaca',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const CuacaScreen(adm4: '35.10.16.1002'), // ganti kode ADM4 kamu
+                            ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
