@@ -21,6 +21,23 @@ Alur aplikasi sitanam dapat dilihat pada flowchart dibawah ini
 
 ![alur sistem](dok/0.png)<p>
 
+## Desain Arsitektur Sistem
+<p>
+
+<center><img src="dok/18.png" alt="alur sistem" width="300" height="200"/></center><p>
+
+Pada diagram diatas menjelaskan Desain Arsitektur Komunikasi Data Sistem, adapun detailnya sebagai berikut.<p>
+
+- **Perangkat IoT** mengirimkan data sensor ke Firebase (server cloud).
+
+- **Firebase** menyimpan data dan meneruskannya ke aplikasi mobile Flutter.
+
+- **Aplikasi Flutter** berfungsi melihat data real time dan mengirim perintah (misalnya kontrol pompa) ke Firebase, lalu diteruskan ke perangkat IoT.
+
+Singkatnya: IoT ↔ Firebase ↔ Flutter untuk pertukaran data dan kendali secara real-time.
+
+
+
 
 ## Dokumentasi Pengerjaan
 
@@ -94,9 +111,11 @@ Halaman Kelola Catatan digunakan untuk mengelola catatan petani dengan fitur tam
 | ![Gambar 1](dok/24.png) | ![Gambar 2](dok/23.png) |  ![Gambar 3](dok/26.png) | ![Gambar 3](dok/25.png) | ![Gambar 3](dok/27.png) |
 
 **Pembuatan Halaman Rekomendasi Pupuk**<p>
+Halaman Rekomendasi Pupuk menampilkan rata-rata kandungan N, P, K tanah, fase tanaman, serta tingkat unsur hara, lalu memberikan rekomendasi pupuk sesuai umur tanaman berdasarkan data dari Firebase.
 
-Next
-
+| Halaman Rekomendasi Pupuk | Halaman Rekomendasi Pupuk | 
+|----------|----------|
+| ![Gambar 1](dok/28.png) | ![Gambar 2](dok/29.png) |
 
 This project is a starting point for a Flutter application.
 
