@@ -3,7 +3,7 @@ import 'package:sitanam_alvian_apk/Pages/dashboard.dart';
 import 'package:sitanam_alvian_apk/Pages/splashscreen.dart';
 // import 'package:sitanam_alvian_apk/Pages/settings.dart';
 import 'package:sitanam_alvian_apk/Pages/addcatatan.dart';
-// import 'package:sitanam_alvian_apk/Pages/editcatatan.dart';
+import 'package:sitanam_alvian_apk/Pages/editcatatan.dart';
 import 'package:sitanam_alvian_apk/Pages/akun.dart';
 import 'package:sitanam_alvian_apk/Pages/login.dart';
 import 'package:sitanam_alvian_apk/Pages/register.dart';
@@ -39,25 +39,25 @@ class Routes {
         return AddCatatanScreen(selectedPlot: ''); // Nilai default jika null
       }
     },
-    // editCatatan: (context) {
-    //   final args = ModalRoute.of(context)?.settings.arguments;
-    //   if (args is Map<String, dynamic>) {
-    //     return EditCatatanScreen(
-    //       selectedPlot: args['selectedPlot'] ?? '',
-    //       catatanKey: args['catatanKey'] ?? '',
-    //       initialCatatan: args['initialCatatan'] ?? '',
-    //       initialTanggal: args['initialTanggal'] ?? '',
-    //       initialWaktu: args['initialWaktu'] ?? '',
-    //     );
-    //   } else {
-    //     return EditCatatanScreen(
-    //       selectedPlot: '',
-    //       catatanKey: '',
-    //       initialCatatan: '',
-    //       initialTanggal: '',
-    //       initialWaktu: '',
-    //     ); // Nilai default jika `arguments` tidak sesuai
-    //   }
-    // },
+    editCatatan: (context) {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args is Map<String, dynamic>) {
+        return EditCatatanScreen(
+          selectedPlot: args['selectedPlot'] ?? '',
+          catatanKey: args['catatanKey'] ?? '',
+          initialCatatan: args['initialCatatan'] ?? '',
+          initialTanggal: args['initialTanggal'] ?? '',
+          initialWaktu: args['initialWaktu'] ?? '',
+        );
+      } else {
+        return EditCatatanScreen(
+          selectedPlot: '',
+          catatanKey: '',
+          initialCatatan: '',
+          initialTanggal: '',
+          initialWaktu: '',
+        ); // Nilai default jika `arguments` tidak sesuai
+      }
+    },
   };
 }
