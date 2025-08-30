@@ -86,7 +86,16 @@ Halaman Status Lingkungan menampilkan data real-time seperti kelembaban tanah da
 
 
 -------------------
+**Pembuatan Halaman Kelola Catatan**<p>
+Halaman Kelola Catatan digunakan untuk mengelola catatan petani dengan fitur tambah, edit, lihat, dan hapus catatan yang telah diinput.
 
+| Lihat Catatan | Tambah Catatan | Edit Catatan | Detail Catatan  | Hapus Catatan
+|----------|----------|-------------|-----------|---------|
+| ![Gambar 1](dok/24.png) | ![Gambar 2](dok/23.png) |  ![Gambar 3](dok/26.png) | ![Gambar 3](dok/25.png) | ![Gambar 3](dok/27.png) |
+
+**Pembuatan Halaman Rekomendasi Pupuk**<p>
+
+Next
 
 
 This project is a starting point for a Flutter application.
