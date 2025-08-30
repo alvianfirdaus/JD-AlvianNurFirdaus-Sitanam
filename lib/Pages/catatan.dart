@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'dart:async';
 import 'package:sitanam_alvian_apk/Routes/routes.dart';
-// import 'package:sitanam_alvian_apk/Pages/editcatatan.dart';
+import 'package:sitanam_alvian_apk/Pages/editcatatan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CatatanScreen extends StatefulWidget {
@@ -110,18 +110,18 @@ class _CatatanScreenState extends State<CatatanScreen> {
                             }
                           },
                           onEdit: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => EditCatatanScreen(
-                            //       selectedPlot: selectedPlot,
-                            //       catatanKey: key, // Key catatan yang valid
-                            //       initialCatatan: catatan["catatan"] ?? "", 
-                            //       initialTanggal: catatan["tanggal"] ?? "",
-                            //       initialWaktu: catatan["waktu"] ?? "",
-                            //     ),
-                            //   ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditCatatanScreen(
+                                  selectedPlot: selectedPlot,
+                                  catatanKey: key, // Key catatan yang valid
+                                  initialCatatan: catatan["catatan"] ?? "", 
+                                  initialTanggal: catatan["tanggal"] ?? "",
+                                  initialWaktu: catatan["waktu"] ?? "",
+                                ),
+                              ),
+                            );
                           },
                           onInfo: () {
                             showDialog(
