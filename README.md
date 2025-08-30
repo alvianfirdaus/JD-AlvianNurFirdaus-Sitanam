@@ -117,6 +117,21 @@ Halaman Rekomendasi Pupuk menampilkan rata-rata kandungan N, P, K tanah, fase ta
 |----------|----------|
 | ![Gambar 1](dok/28.png) | ![Gambar 2](dok/29.png) |
 
+**Pembuatan Halaman Edukasi Pertanian**<p>
+Eduksi Pertanin Berupa Edukasi Pertanian
+
+| Pilihan Video Terbaru | Lihat Video | 
+|----------|----------|
+| ![Gambar 1](dok/30.png) | ![Gambar 2](dok/31.png) |
+
+**Pembuatan Halaman Perkiraan Cuaca**<p>
+Perkiraan Cuaca Pertanian
+
+| Perkiraan Cuaca| 
+|----------|
+| ![Gambar 1](dok/32.png) | 
+
+
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
