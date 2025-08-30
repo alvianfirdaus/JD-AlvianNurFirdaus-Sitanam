@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sitanam_alvian_apk/Pages/dashboard.dart';
 import 'package:sitanam_alvian_apk/Pages/splashscreen.dart';
 // import 'package:sitanam_alvian_apk/Pages/settings.dart';
-// import 'package:sitanam_alvian_apk/Pages/addcatatan.dart';
+import 'package:sitanam_alvian_apk/Pages/addcatatan.dart';
 // import 'package:sitanam_alvian_apk/Pages/editcatatan.dart';
 import 'package:sitanam_alvian_apk/Pages/akun.dart';
 import 'package:sitanam_alvian_apk/Pages/login.dart';
@@ -31,14 +31,14 @@ class Routes {
     tambahAlatPage:(context) => TambahAlatPage(),
     akun: (context) => AkunScreen(),
     // settings: (context) => SettingsPage(),
-    // addCatatan: (context) {
-    //   final args = ModalRoute.of(context)?.settings.arguments;
-    //   if (args is String) {
-    //     return AddCatatanScreen(selectedPlot: args);
-    //   } else {
-    //     return AddCatatanScreen(selectedPlot: ''); // Nilai default jika null
-    //   }
-    // },
+    addCatatan: (context) {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args is String) {
+        return AddCatatanScreen(selectedPlot: args);
+      } else {
+        return AddCatatanScreen(selectedPlot: ''); // Nilai default jika null
+      }
+    },
     // editCatatan: (context) {
     //   final args = ModalRoute.of(context)?.settings.arguments;
     //   if (args is Map<String, dynamic>) {
