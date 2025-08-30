@@ -6,6 +6,8 @@ import 'package:sitanam_alvian_apk/Pages/lingkungan.dart';
 import 'package:sitanam_alvian_apk/Pages/catatan.dart';
 import 'package:sitanam_alvian_apk/Pages/hitung_nutrisi.dart';
 import 'package:sitanam_alvian_apk/Pages/akun.dart';
+import 'package:sitanam_alvian_apk/Pages/edukasi.dart';
+// import 'package:sitanam_alvian_apk/Pages/cuaca_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   final int selectedIndex;
@@ -17,6 +19,8 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  static const double _headerHeight = 230;
+
   String selectedPlot = "Plot 01"; // Default selected plot
   Map<String, dynamic> plotData = {}; // Plot data
 
@@ -25,7 +29,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    // _selectedIndex = widget.selectedIndex;
     _loadSelectedPlot(); // Load saved plot
   }
 
@@ -50,101 +53,134 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    body: Stack(
-      children: [
-        Column(
-          children: [
-            // Gambar Header
-            Container(
-              height: 230,
-              width: double.infinity,
-              decoration: BoxDecoration(
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          // ===== Scrollable content (di belakang header) =====
+          SingleChildScrollView(
+            // padding top = tinggi header, supaya konten mulai tepat di bawah header
+            padding: const EdgeInsets.only(top: _headerHeight),
+            child: Column(
+              children: [
+                // Grid Menu
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(), // ikut scroll parent
+                    children: [
+                      DashboardItem(
+                        imagePath: 'assets/images/iconcontrol.png',
+                        label: 'Kendali IOT',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => KendaliScreen()),
+                          );
+                        },
+                      ),
+                      DashboardItem(
+                        imagePath: 'assets/images/iconlingkungan.png',
+                        label: 'Status Lingkungan',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => LingkunganScreen()),
+                          );
+                        },
+                      ),
+                      DashboardItem(
+                        imagePath: 'assets/images/iconscript.png',
+                        label: 'Catatan',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => CatatanScreen()),
+                          );
+                        },
+                      ),
+                      DashboardItem(
+                        imagePath: 'assets/images/icondeteksi.png',
+                        label: 'Rekomendasi Pupuk',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => HitungNutrisiScreen()),
+                          );
+                        },
+                      ),
+                      DashboardItem(
+                        imagePath: 'assets/images/iconedu.png',
+                        label: 'Edukasi Pertanian',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => EdukasiScreen()),
+                          );
+                        },
+                      ),
+                      // DashboardItem(
+                      //   imagePath: 'assets/images/iconcuaca.png',
+                      //   label: 'Perkiraan Cuaca',
+                      //   onTap: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (_) => const CuacaScreen(adm4: '35.10.16.1002'), // ganti kode ADM4 kamu
+                      //       ),
+                      //     );
+                      //   },
+                      // ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24), // padding bawah
+              ],
+            ),
+          ),
+
+          // ===== Fixed header (tetap) =====
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: _headerHeight,
+            child: Container(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/DashboardHeader.png'),
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-            // Grid Menu
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    DashboardItem(
-                      imagePath: 'assets/images/iconcontrol.png',
-                      label: 'Kendali IOT',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => KendaliScreen()),
-                        );
-                      },
-                    ),
-                    DashboardItem(
-                      imagePath: 'assets/images/iconlingkungan.png',
-                      label: 'Status Lingkungan',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LingkunganScreen()),
-                        );
-                      },
-                    ),
-                    DashboardItem(
-                      imagePath: 'assets/images/iconscript.png',
-                      label: 'Catatan',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => CatatanScreen()),
-                        );
-                      },
-                    ),
-                    DashboardItem(
-                      imagePath: 'assets/images/icondeteksi.png',
-                      label: 'Rekomendasi Pupuk',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HitungNutrisiScreen()),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+          ),
+
+          // ===== PlotBox di atas header (tetap) =====
+          Positioned(
+            top: 158,
+            left: 90,
+            right: 90,
+            child: Center(
+              child: PlotBox(
+                plotName: selectedPlot,
+                isSelected: true,
+                onTap: () {
+                  final plotKey = selectedPlot.toLowerCase().replaceAll(' ', '');
+                  listenToPlotData(plotKey);
+                },
               ),
             ),
-          ],
-        ),
-        // PlotBox di tengah atas gambar
-        Positioned(
-          top: 158,
-          left: 90,
-          right: 90,
-          child: Center(
-            child: PlotBox(
-              plotName: selectedPlot,
-              isSelected: true,
-              onTap: () {
-                final plotKey = selectedPlot.toLowerCase().replaceAll(' ', '');
-                listenToPlotData(plotKey);
-              },
-            ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }
-}
+
 class PlotBox extends StatelessWidget {
   final bool isSelected;
   final String plotName;
@@ -161,9 +197,9 @@ class PlotBox extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? Color.fromARGB(255, 255, 255, 255) : Colors.white,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected ? const Color.fromARGB(255, 255, 255, 255) : Colors.green.shade900,
@@ -171,10 +207,10 @@ class PlotBox extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Color.fromARGB(255, 8, 102, 12).withOpacity(0.3),
+              color: const Color.fromARGB(255, 8, 102, 12).withOpacity(0.3),
               spreadRadius: 2,
               blurRadius: 6,
-              offset: Offset(0, 3),
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -182,15 +218,15 @@ class PlotBox extends StatelessWidget {
           children: [
             Icon(
               Icons.devices,
-              color: isSelected ? Color.fromARGB(255, 39, 128, 15) : Colors.green[900],
+              color: isSelected ? const Color.fromARGB(255, 39, 128, 15) : Colors.green[900],
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Text(
               'Perangkat : $plotName',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: isSelected ? Color.fromARGB(255, 39, 128, 15) : Colors.green[900],
+                color: isSelected ? const Color.fromARGB(255, 39, 128, 15) : Colors.green[900],
               ),
             ),
           ],
@@ -231,21 +267,21 @@ class DashboardItem extends StatelessWidget {
               ),
             ],
           ),
-          child: Center( // Tambahkan Center agar seluruh konten di tengah
+          child: Center(
             child: Column(
-              mainAxisSize: MainAxisSize.min, // Tambahan agar rapat
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center, // Sejajarkan ke tengah horizontal
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
                   imagePath,
                   width: 48,
                   height: 48,
                 ),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 Text(
                   label,
-                  textAlign: TextAlign.center, // Tambahan ini untuk memastikan teks di tengah
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
