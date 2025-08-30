@@ -2,7 +2,7 @@
 
 ![Logo Sitanam](dok/00.png)
 
-**Sitanam** adalah aplikasi mobile berbasis Smart Precision Farming yang dirancang untuk membantu petani dalam mengelola lahan pertanian secara modern, efisien, dan berkelanjutan. Aplikasi ini terintegrasi dengan perangkat IoT (Internet of Things) berbasis ESP32 dan berbagai sensor (kelembaban tanah, suhu, kelembaban udara, NPK, pH, dsb.), sehingga mampu memantau kondisi lahan secara real-time, mengontrol alat dan melihat rekomendasi pupuk yang sesuai dengan tanaman menggunakan sistem pengambilan keputusan presisi.<p>
+**Sitanam** adalah aplikasi mobile berbasis Smart Precision Farming yang dirancang untuk membantu petani dalam mengelola lahan pertanian secara modern, efisien, dan berkelanjutan. Aplikasi ini terintegrasi dengan perangkat IoT (Internet of Things) berbasis ESP32 dan berbagai sensor (kelembaban tanah, suhu, kelembaban udara, NPK, dsb.), sehingga mampu memantau kondisi lahan secara real-time, mengontrol alat dan melihat rekomendasi pupuk yang sesuai dengan tanaman menggunakan sistem pengambilan keputusan presisi.<p>
 
 
 
@@ -76,6 +76,13 @@ Halaman Kendali IoT memungkinkan pengguna mengatur pompa dari jarak jauh. Tersed
 | Mode Manual Pompa On| Mode Manual Pompa Off | Mode Otomatis sesuai kelembaban tanah |
 |----------|----------|-------------|
 | ![Gambar 1](dok/15.png) | ![Gambar 2](dok/16.png) |  ![Gambar 3](dok/17.png) |
+
+**Pembuatan Halaman Status Lingkungan**<p>
+Halaman Status Lingkungan menampilkan data real-time seperti kelembaban tanah dan udara, suhu, mode dan status pompa, serta kadar N, P, K pada tanah. Dilengkapi grafik harian, bulanan, dan tabel riwayat, halaman ini memudahkan pengguna memantau dan menganalisis kondisi lingkungan pertanian.
+
+| Data Realtime | Grafik Harian | Grafik Bulanan | Tabel History |
+|----------|----------|-------------|-----------|
+| ![Gambar 1](dok/19.png) | ![Gambar 2](dok/20.png) |  ![Gambar 3](dok/21.png) | ![Gambar 3](dok/22.png) |
 
 
 -------------------
